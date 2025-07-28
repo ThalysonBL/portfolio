@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Inter, Share_Tech_Mono } from "next/font/google";
 import "./globals.css";
+import LoadingScreen from "@/components/LoadingScreen";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+});
+const shareTechMono = Share_Tech_Mono({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-share-tech-mono',
 });
 
 export const metadata: Metadata = {
@@ -23,10 +29,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${inter.variable} ${shareTechMono.variable} antialiased`}
+        cz-shortcut-listen="true"
       >
+        <LoadingScreen />
         {children}
       </body>
     </html>
