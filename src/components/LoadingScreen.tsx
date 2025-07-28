@@ -1,9 +1,9 @@
 "use client"
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, memo } from 'react';
 import styles from '@/styles/loadingScreen.module.css';
 
-export default function LoadingScreen() {
+const LoadingScreen = memo(function LoadingScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [showCompleted, setShowCompleted] = useState(false);
@@ -14,55 +14,91 @@ export default function LoadingScreen() {
   const [textAppearing, setTextAppearing] = useState(false);
   const [loadingComplete, setLoadingComplete] = useState(false);
   
+  // Usar refs para os timers para evitar vazamentos de memória
+  const progressIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  
+  // Função para limpar todos os timers
+  const clearAllTimers = () => {
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+    }
+    
+    timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
+    timeoutsRef.current = [];
+  };
+  
   useEffect(() => {
     // Iniciar abertura dos colchetes
-    setTimeout(() => {
+    const timeout1 = setTimeout(() => {
       setBracketsOpen(true);
       setTextAppearing(true);
     }, 500);
+    timeoutsRef.current.push(timeout1);
     
     // Quando os colchetes estiverem totalmente abertos
-    setTimeout(() => {
+    const timeout2 = setTimeout(() => {
       setBracketsFullyOpen(true);
       setShowLoadingText(true);
       
-      // Iniciar progresso
-      const progressInterval = setInterval(() => {
-        setProgress((prevProgress) => {
-          if (prevProgress >= 100) {
-            clearInterval(progressInterval);
+      // Iniciar progresso - usando requestAnimationFrame para melhor performance
+      let lastTime = performance.now();
+      let progress = 0;
+      
+      const animate = (time: number) => {
+        // Limitar a taxa de atualização para ~30fps para este tipo de animação
+        if (time - lastTime > 33) {
+          lastTime = time;
+          progress += 1;
+          
+          if (progress >= 100) {
             // Só mostrar "COMPLETED" após a barra chegar a 100%
-            setTimeout(() => {
+            setProgress(100);
+            const timeout = setTimeout(() => {
               setLoadingComplete(true);
-
               setShowCompleted(true);
             }, 300);
-            return 100;
+            timeoutsRef.current.push(timeout);
+            return;
           }
-          return prevProgress + 1;
-        });
-      }, 30);
+          
+          setProgress(progress);
+        }
+        
+        if (progress < 100) {
+          requestAnimationFrame(animate);
+        }
+      };
       
-      // Limpar interval quando componente for desmontado
-      return () => clearInterval(progressInterval);
+      requestAnimationFrame(animate);
     }, 1500); // Tempo para os colchetes abrirem completamente
+    timeoutsRef.current.push(timeout2);
     
+    // Limpar todos os timers quando o componente for desmontado
+    return clearAllTimers;
   }, []);
 
   // Quando o progresso chegar a 100% e mostrar "COMPLETED"
   useEffect(() => {
     if (showCompleted) {
       // Aguardar um pouco antes de fechar os colchetes
-      setTimeout(() => {
+      const timeout1 = setTimeout(() => {
         setShowLoadingText(false);
         setTextAppearing(false);
         setBracketsClosing(true);
       }, 1000);
+      timeoutsRef.current.push(timeout1);
 
       // Aguardar a animação de fechamento antes de esconder o loading
-      setTimeout(() => {
+      const timeout2 = setTimeout(() => {
         setIsLoading(false);
       }, 2500);
+      timeoutsRef.current.push(timeout2);
+      
+      return () => {
+        clearTimeout(timeout1);
+        clearTimeout(timeout2);
+      };
     }
   }, [showCompleted]);
 
@@ -90,7 +126,11 @@ export default function LoadingScreen() {
               </div>
               <div 
                 className={styles.progressBar} 
-                style={{ width: `${progress}%` }}
+                style={{ 
+                  width: `${progress}%`,
+                  willChange: 'width',
+                  transform: 'translateZ(0)'
+                }}
               />
             </div>
           </div>
@@ -98,4 +138,6 @@ export default function LoadingScreen() {
       </div>
     </div>
   );
-} 
+});
+
+export default LoadingScreen; 

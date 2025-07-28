@@ -3,71 +3,165 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-image: url('/background.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    padding: 0 100px 0 100px;
-    height: 95vh;
+    background: linear-gradient(135deg, var(--neutral-950) 0%, var(--neutral-900) 100%);
+    padding: 0 2rem;
+    min-height: 100vh;
     width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.backgroundSection::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 25% 25%, var(--primary-dark) 0.5%, transparent 6%),
+        radial-gradient(circle at 75% 75%, var(--accent-dark) 0.5%, transparent 6%),
+        radial-gradient(circle at 50% 50%, var(--primary-light) 0.5%, transparent 10%);
+    opacity: 0.1;
+    z-index: 0;
 }
 
 .contentAbout {
     display: flex;
     width: 100%;
-    justify-content: center;
+    max-width: 1280px;
+    justify-content: space-between;
     align-items: center;
-    gap: 100px;
+    gap: 4rem;
+    position: relative;
+    z-index: 1;
+    padding: 6rem 0 2rem 0;
+}
+
+@media (max-width: 1024px) {
+    .contentAbout {
+        flex-direction: column;
+        text-align: center;
+        gap: 3rem;
+        padding-top: 8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .backgroundSection {
+        padding: 0 1rem;
+    }
     
+    .contentAbout {
+        padding-top: 6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .contentAbout {
+        gap: 2rem;
+        padding-top: 5rem;
+    }
 }
 
 .title {
-    color: #00FFFF;
+    color: var(--neutral-50);
     font-size: 3rem;
     font-family: var(--font-share-tech-mono);
-    font-weight: 800;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
 .title span {
-    color: #FF00CC;
-    font-size: 4rem;
+    color: var(--primary);
+    font-size: 3.5rem;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-.decoderWrapper {
-    display: inline-block;
-    position: relative;
-    color: #FF00CC;
-    font-size: 4rem;
-    margin: 10px 0;
+@media (max-width: 768px) {
+    .title {
+        font-size: 2.5rem;
+    }
+    
+    .title span {
+        font-size: 3rem;
+    }
 }
 
-.button {
-    font-size: 2rem;
-    color: #00FFFF;
-    font-family: var(--font-share-tech-mono);
-    font-weight: 800;
-    text-decoration: none;
-    border: 1px solid #00FFFF;
-    padding: 10px 20px;
-    border-radius: 5px;
-    margin-top: 20px;
-    box-shadow: 0 0 1px #00FFFF, 0 0 10px #00FFFF;
+@media (max-width: 480px) {
+    .title {
+        font-size: 2rem;
+    }
+    
+    .title span {
+        font-size: 2.5rem;
+    }
+}
+
+.subtitle {
+    color: var(--neutral-300);
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+    max-width: 500px;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .subtitle {
+        font-size: 1.125rem;
+        margin-top: 1rem;
+        max-width: 100%;
+    }
 }
 
 .buttonContact {
-    font-size: 2rem;
-    color: #00FFFF;
-    font-family: var(--font-share-tech-mono);
-    font-weight: 800;
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+    color: var(--neutral-50);
+    font-weight: 600;
+    border-radius: 0.5rem;
     text-decoration: none;
-    border: 1px solid #00FFFF;
-    border-radius: 5px;
-    padding: 10px 20px;
-    box-shadow: 0 0 1px #00FFFF, 0 0 10px #00FFFF;
+    transition: all 0.3s ease;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
+
 .buttonContact:hover {
-    background-color: #00FFFF;
-    color: #000000;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+.buttonContact::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--primary) 100%);
+    z-index: -1;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.buttonContact:hover::before {
+    opacity: 1;
+}
+
+@media (max-width: 480px) {
+    .buttonContact {
+        margin-top: 1.5rem;
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
 }
 
 .contentAboutText {
@@ -75,35 +169,56 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20px;
-    background-color: #00000054;
-    padding: 20px;
-    border-radius: 10px;
-    /* box-shadow: 0 0 10px #00FFFF, 0 0 20px #00ffff46; */
-    /* border: 1px solid #00FFFF; */
-    width: 40%;
+    gap: 1.5rem;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .contentAboutText {
+        padding: 1.5rem;
+        max-width: 100%;
+    }
 }
 
 .imageProfile {
-    border-radius: 100%;
-    width: 130px;
-    height: 130px;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
     object-fit: cover;
-    box-shadow: 0 0 10px #00FFFF, 0 0 20px #00ffff48;
-    border: 1px solid #00FFFF;
-    padding: 10px;
+    border: 3px solid var(--primary);
+    padding: 0.25rem;
     margin: 0 auto;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+}
+
+@media (max-width: 480px) {
+    .imageProfile {
+        width: 120px;
+        height: 120px;
+    }
 }
 
 .aboutText {
-    color: #f5f4f4;
-    font-size: 1.1rem;
+    color: var(--neutral-200);
+    font-size: 1rem;
     font-weight: 400;
-    line-height: 1.6;
-    width: 90%;
-    padding: 20px;
-    /* border-radius: 10px; */
-    /* background-color: #00000054; */
+    line-height: 1.7;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+@media (max-width: 768px) {
+    .aboutText {
+        padding: 0;
+        font-size: 0.95rem;
+    }
 }
 
 /* Projetos */
@@ -113,23 +228,81 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 0 100px;
-    background-color: #00000054;
-    margin-bottom: 100px;
+    padding: 5rem 2rem;
+    background: linear-gradient(180deg, var(--neutral-900) 0%, var(--neutral-950) 100%);
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+}
+
+.projectsSection::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--primary-light) 50%, transparent 100%);
+    opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+    .projectsSection {
+        padding: 4rem 1rem;
+    }
 }
 
 .titleProjects {
-    display: flex;
-    color: #00FFFF;
-    font-size: 3rem;
+    color: var(--neutral-50);
+    font-size: 2.5rem;
     font-family: var(--font-share-tech-mono);
-    font-weight: 800;
+    font-weight: 700;
     text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    display: inline-block;
+}
+
+.titleProjects::after {
+    content: "";
+    position: absolute;
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+    border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+    .titleProjects {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .titleProjects {
+        font-size: 1.75rem;
+    }
+}
+
+/* Contact section */
+.contactSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    width: 100%;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    padding-bottom: 10px;
-    text-shadow: 0 0 10px #00FFFF, 0 0 20px #00ffff48;
-    border-bottom: 1px solid #00FFFF;
+    padding: 5rem 2rem;
+    background: linear-gradient(180deg, var(--neutral-900) 0%, var(--neutral-950) 100%);
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+    .contactSection {
+        padding: 4rem 1rem;
+    }
 }

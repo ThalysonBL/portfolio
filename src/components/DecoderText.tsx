@@ -1,6 +1,7 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, memo } from "react";
 
+// Memoizando as letras para evitar recriação
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 interface DecoderTextProps {
@@ -10,11 +11,11 @@ interface DecoderTextProps {
     delayAfterComplete?: number;
 }
 
-export default function DecoderText({ 
+const DecoderText = memo(function DecoderText({ 
     text, 
     speed = 80, 
-    repeatInterval = 30000,
-    delayAfterComplete = 10000 
+    repeatInterval = 6000,
+    delayAfterComplete = 6000 
 }: DecoderTextProps) {
     // Iniciar com texto vazio
     const [displayedText, setDisplayedText] = useState<string>("");
@@ -23,11 +24,14 @@ export default function DecoderText({
     const elementRef = useRef<HTMLSpanElement>(null);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const hasRunInitialEffect = useRef<boolean>(false);
+    const observerRef = useRef<IntersectionObserver | null>(null);
+    const repeatTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const finalTextRef = useRef(text);
 
-    // Função para executar o efeito de decodificação
+    // Função para executar o efeito de decodificação - otimizada
     const runDecodingEffect = () => {
         let iteration = 0;
-        const finalText = text;
+        const finalText = finalTextRef.current;
         
         // Limpar qualquer intervalo anterior
         if (intervalRef.current) {
@@ -36,90 +40,104 @@ export default function DecoderText({
         
         // Criar novo intervalo para o efeito
         const interval = setInterval(() => {
-            setDisplayedText(
-                finalText
-                    .split("")
-                    .map((letter, index) => {
-                        if (index < iteration) {
-                            return finalText[index];
-                        }
-                        return letters[Math.floor(Math.random() * letters.length)];
-                    })
-                    .join("")
-            );
+            // Otimização: Criar o array apenas uma vez e modificá-lo
+            const result = new Array(finalText.length);
+            
+            for (let i = 0; i < finalText.length; i++) {
+                if (i < Math.floor(iteration)) {
+                    result[i] = finalText[i];
+                } else {
+                    // Otimização: Usar índice pré-calculado para letras aleatórias
+                    const randomIndex = Math.floor(Math.random() * letters.length);
+                    result[i] = letters[randomIndex];
+                }
+            }
+            
+            setDisplayedText(result.join(""));
             
             if (iteration >= finalText.length) {
                 clearInterval(interval);
+                intervalRef.current = null;
                 
                 // Aguardar o delayAfterComplete antes de permitir que o efeito seja executado novamente
-                setTimeout(() => {
+                const timeout = setTimeout(() => {
                     setEffectStarted(false);
                 }, delayAfterComplete);
                 
-                return;
+                // Limpar o timeout se o componente for desmontado
+                return () => clearTimeout(timeout);
             }
             
-            iteration += 1/5; // Mais lento: 1/5 em vez de 1/3
+            iteration += 1/3; // Velocidade ajustada para melhor visualização
         }, speed);
         
         intervalRef.current = interval;
     };
 
-    // Detectar quando o elemento estiver visível na tela e o componente for montado
+    // Iniciar o efeito imediatamente após a montagem
     useEffect(() => {
+        // Atualizar a ref do texto quando o texto mudar
+        finalTextRef.current = text;
+        
         // Garantir que o texto comece vazio
         setDisplayedText("");
         
-        const observer = new IntersectionObserver(
-            (entries) => {
-                const [entry] = entries;
-                if (entry.isIntersecting && !hasRunInitialEffect.current) {
-                    setIsVisible(true);
-                    // Marcar que o efeito inicial foi executado
-                    hasRunInitialEffect.current = true;
-                } else if (!entry.isIntersecting) {
-                    setIsVisible(false);
-                }
-            },
-            { threshold: 0.1, rootMargin: "0px 0px 0px 0px" }
-        );
-
-        if (elementRef.current) {
-            observer.observe(elementRef.current);
-        }
-
-        return () => {
-            if (elementRef.current) observer.unobserve(elementRef.current);
-            if (intervalRef.current) clearInterval(intervalRef.current);
-        };
-    }, []);
-
-    // Executar o efeito quando o elemento se tornar visível
-    useEffect(() => {
-        if (isVisible && !effectStarted) {
-            // Marcar que o efeito começou
+        // Iniciar o efeito após um pequeno atraso
+        const startTimeout = setTimeout(() => {
+            setIsVisible(true);
             setEffectStarted(true);
-            
-            // Pequeno atraso para garantir que o efeito comece após a página estar visível
-            setTimeout(() => {
-                runDecodingEffect();
-            }, 800);
-            
-            // Configurar repetição do efeito com intervalo muito maior
-            const repeatTimer = setInterval(() => {
-                if (!effectStarted) {
+            runDecodingEffect();
+        }, 500);
+        
+        return () => {
+            clearTimeout(startTimeout);
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
+            if (repeatTimerRef.current) {
+                clearInterval(repeatTimerRef.current);
+            }
+        };
+    }, [text]);
+
+    // Configurar repetição do efeito se necessário
+    useEffect(() => {
+        if (repeatInterval > 0) {
+            repeatTimerRef.current = setInterval(() => {
+                if (!effectStarted && isVisible) {
                     setEffectStarted(true);
                     runDecodingEffect();
                 }
             }, repeatInterval);
             
-            return () => clearInterval(repeatTimer);
+            return () => {
+                if (repeatTimerRef.current) {
+                    clearInterval(repeatTimerRef.current);
+                }
+            };
         }
-    }, [isVisible, effectStarted, text, speed, repeatInterval]);
+    }, [isVisible, effectStarted, repeatInterval]);
+
+    // Garantir que o texto final seja exibido mesmo se o efeito falhar
+    useEffect(() => {
+        const fallbackTimer = setTimeout(() => {
+            if (!displayedText || displayedText !== text) {
+                setDisplayedText(text);
+            }
+        }, 3000);
+        
+        return () => clearTimeout(fallbackTimer);
+    }, [displayedText, text]);
 
     return (
-        <span ref={elementRef} className="decoder-box">
-            {displayedText || "\u00A0"} {/* Usar espaço não-quebrável se texto estiver vazio */}
+        <span 
+            ref={elementRef} 
+            className="decoder-box"
+            style={{ willChange: effectStarted ? 'contents' : 'auto' }}
+        >
+            {displayedText || text} {/* Usar o texto original como fallback */}
         </span>
     );
-}
+});
+
+export default DecoderText;

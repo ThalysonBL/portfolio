@@ -2,26 +2,46 @@
     {
         "id": 1,
         "type": "app",
-        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg"
+        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg",
+        "title": "App de Gestão Financeira",
+        "description": "Aplicativo mobile para controle financeiro pessoal com análise de gastos e planejamento orçamentário.",
+        "technologies": ["React Native", "TypeScript", "Firebase"],
+        "link": "#projeto1"
     },
     {
         "id": 2,
         "type": "sites",
-        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg"
+        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg",
+        "title": "E-commerce de Tecnologia",
+        "description": "Loja virtual completa com sistema de pagamentos integrado e painel administrativo.",
+        "technologies": ["Next.js", "Tailwind CSS", "Stripe"],
+        "link": "#projeto2"
     },
     {
         "id": 3,
         "type": "sites",
-        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg"
+        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg",
+        "title": "Portal de Notícias",
+        "description": "Site de notícias com sistema de gerenciamento de conteúdo e painel administrativo.",
+        "technologies": ["React", "Node.js", "MongoDB"],
+        "link": "#projeto3"
     },
     {
         "id": 4,
         "type": "sites",
-        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg"
+        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg",
+        "title": "Dashboard Analítico",
+        "description": "Interface de visualização de dados com gráficos interativos e relatórios personalizados.",
+        "technologies": ["React", "D3.js", "Material UI"],
+        "link": "#projeto4"
     },
     {
         "id": 5,
-        "type": "site",
-        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg"
+        "type": "outros",
+        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg",
+        "title": "Sistema de Automação",
+        "description": "Ferramenta de automação de processos para empresas com integração a múltiplos serviços.",
+        "technologies": ["Python", "Django", "Docker"],
+        "link": "#projeto5"
     }
 ]
