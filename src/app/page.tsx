@@ -1,103 +1,134 @@
+"use client";
+
+import DecoderText from "@/components/DecoderText";
+import SplitText from "@/components/effects/SplitText";
+import Sidebar from "@/components/sideBar";
+import styles from "@/styles/page.module.css";
+import { useInView } from "motion/react";
 import Image from "next/image";
+import { useRef, useState } from "react";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import CodeWorldBackground from "@/components/CodeWorldBackground";
+import TabsProjects from "@/components/TabsProjects";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-10% 0px" });
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  // Valores de movimento para o efeito Tilt Card
+  const cardRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // Transformar os valores de movimento para rotação - ajustando para um efeito moderado
+  const rotateX = useTransform(y, [-100, 100], [15, -15]);
+  const rotateY = useTransform(x, [-100, 100], [-15, 15]);
+
+  // Adicionar spring para suavizar o movimento
+  const springConfig = { damping: 20, stiffness: 150 };
+  const springRotateX = useSpring(rotateX, springConfig);
+  const springRotateY = useSpring(rotateY, springConfig);
+
+  // Valores para o brilho dinâmico - ajustando para um efeito moderado
+  const glowX = useTransform(x, [-100, 100], [-15, 15], { clamp: false });
+  const glowY = useTransform(y, [-100, 100], [-15, 15], { clamp: false });
+  const glowOpacity = useTransform(
+    y,
+    [-100, 0, 100],
+    [0.35, 0.2, 0.35]
+  );
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+
+    const rect = cardRef.current.getBoundingClientRect();
+
+    // Calcular a posição do mouse relativa ao centro do card
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    // Normalizar valores para o intervalo -100 a 100
+    const mouseX = e.clientX - centerX;
+    const mouseY = e.clientY - centerY;
+
+    // Ajustar a sensibilidade - para um efeito moderado
+    x.set(mouseX * 0.45);
+    y.set(mouseY * 0.45);
+  };
+
+  const handleMouseLeave = () => {
+    // Resetar a posição quando o mouse sair
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <>
+      <header>
+        <Sidebar />
+      </header>
+      <section className={styles.backgroundSection}>
+        <div className={styles.contentAbout}>
+          <div>
+            <h1 className={styles.title}>Olá, Eu sou <br />
+              <span> <DecoderText text="Desenvolvedor" /></span> <br />
+              Crio sites, apps <br />
+              e sistemas</h1>
+            <div className="mt-10">
+              <a href="" className={styles.buttonContact}>
+                Entrar em contato
+              </a>
+            </div>
+          </div>
+          <motion.div
+            ref={cardRef}
+            className={`${styles.contentAboutText} relative perspective-1000 cursor-default`}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            whileHover={{ scale: 1.015 }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <motion.div
+              className="w-full h-full relative"
+              style={{
+                rotateX: springRotateX,
+                rotateY: springRotateY,
+                transformStyle: "preserve-3d",
+                boxShadow: `
+                  0 0 12px rgba(0, 255, 255, 0.35),
+                  ${glowX.get()}px ${glowY.get()}px 18px rgba(0, 255, 255, ${glowOpacity.get()})
+                `
+              }}
+            >
+              <Image src="/imgThalyson.jpg" alt="Foto Thalyson" width={300} height={300} className={`${styles.imageProfile} z-10`} style={{ transform: "translateZ(20px)" }} />
+              <p className={`${styles.aboutText} z-10`} style={{ transform: "translateZ(15px)" }}>
+                Me chamo Thalyson Lima e sou desenvolvedor com 5 anos de experiência na
+                criação de sites, aplicativos, sistemas e automações. <br /><br />
+                Atuo com foco em performance, escalabilidade e boas práticas, utilizando
+                tecnologias como React, React Native, Next.js, Laravel, C++ e Python. <br />
+                Sou movido pelo desafio de transformar ideias em soluções inteligentes,
+                combinando design, funcionalidade <br />
+                e tecnologia para entregar resultados eficientes e modernos.
+              </p>
+
+              {/* Reflexo sutil */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-b from-transparent to-cyan-400/15 rounded-[10px] opacity-35"
+                style={{
+                  transform: "translateZ(5px)",
+                  filter: "blur(2px)"
+                }}
+              />
+            </motion.div>
+          </motion.div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </section>
+      <section ref={ref} className={styles.projectsSection}>
+        <TabsProjects />
+      </section>
+      <CodeWorldBackground />
+    </>
   );
 }
