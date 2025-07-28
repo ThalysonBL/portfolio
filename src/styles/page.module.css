@@ -1,0 +1,135 @@
+.backgroundSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url('/background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 0 100px 0 100px;
+    height: 95vh;
+    width: 100%;
+}
+
+.contentAbout {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+    
+}
+
+.title {
+    color: #00FFFF;
+    font-size: 3rem;
+    font-family: var(--font-share-tech-mono);
+    font-weight: 800;
+}
+
+.title span {
+    color: #FF00CC;
+    font-size: 4rem;
+}
+
+.decoderWrapper {
+    display: inline-block;
+    position: relative;
+    color: #FF00CC;
+    font-size: 4rem;
+    margin: 10px 0;
+}
+
+.button {
+    font-size: 2rem;
+    color: #00FFFF;
+    font-family: var(--font-share-tech-mono);
+    font-weight: 800;
+    text-decoration: none;
+    border: 1px solid #00FFFF;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+    box-shadow: 0 0 1px #00FFFF, 0 0 10px #00FFFF;
+}
+
+.buttonContact {
+    font-size: 2rem;
+    color: #00FFFF;
+    font-family: var(--font-share-tech-mono);
+    font-weight: 800;
+    text-decoration: none;
+    border: 1px solid #00FFFF;
+    border-radius: 5px;
+    padding: 10px 20px;
+    box-shadow: 0 0 1px #00FFFF, 0 0 10px #00FFFF;
+}
+.buttonContact:hover {
+    background-color: #00FFFF;
+    color: #000000;
+}
+
+.contentAboutText {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background-color: #00000054;
+    padding: 20px;
+    border-radius: 10px;
+    /* box-shadow: 0 0 10px #00FFFF, 0 0 20px #00ffff46; */
+    /* border: 1px solid #00FFFF; */
+    width: 40%;
+}
+
+.imageProfile {
+    border-radius: 100%;
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    box-shadow: 0 0 10px #00FFFF, 0 0 20px #00ffff48;
+    border: 1px solid #00FFFF;
+    padding: 10px;
+    margin: 0 auto;
+}
+
+.aboutText {
+    color: #f5f4f4;
+    font-size: 1.1rem;
+    font-weight: 400;
+    line-height: 1.6;
+    width: 90%;
+    padding: 20px;
+    /* border-radius: 10px; */
+    /* background-color: #00000054; */
+}
+
+/* Projetos */
+
+.projectsSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 100px;
+    background-color: #00000054;
+    margin-bottom: 100px;
+}
+
+.titleProjects {
+    display: flex;
+    color: #00FFFF;
+    font-size: 3rem;
+    font-family: var(--font-share-tech-mono);
+    font-weight: 800;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    padding-bottom: 10px;
+    text-shadow: 0 0 10px #00FFFF, 0 0 20px #00ffff48;
+    border-bottom: 1px solid #00FFFF;
+}

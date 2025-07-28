@@ -1,0 +1,27 @@
+[
+    {
+        "id": 1,
+        "type": "app",
+        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg"
+    },
+    {
+        "id": 2,
+        "type": "sites",
+        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg"
+    },
+    {
+        "id": 3,
+        "type": "sites",
+        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg"
+    },
+    {
+        "id": 4,
+        "type": "sites",
+        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg"
+    },
+    {
+        "id": 5,
+        "type": "site",
+        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg"
+    }
+]
