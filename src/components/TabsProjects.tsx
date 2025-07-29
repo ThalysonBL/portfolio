@@ -1,12 +1,11 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import ItemTabContainer from "./ItemTabContainer";
-import { ImageProjectProps } from "@/types/types";
 import SplitText from "./effects/SplitText";
 import { motion, AnimatePresence } from "framer-motion";
+import imageProjects from '../utils/imageProjects.json';
 
 export default function TabsProjects() {
-    const imageProjects = require('../utils/imageProjects.json');
     const tabs = [
         { id: 'todos', label: 'Todos' },
         { id: 'app', label: 'Aplicativos' },

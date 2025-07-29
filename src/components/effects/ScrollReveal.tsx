@@ -1,7 +1,7 @@
 'use client';
 
-import { useRef, useEffect, useState, ReactNode, memo } from 'react';
-import { motion } from 'framer-motion';
+import { useRef, useEffect, useState, ReactNode, memo, CSSProperties } from 'react';
+import { motion, Transition, cubicBezier } from 'framer-motion';
 
 type ScrollRevealProps = {
   children: ReactNode;
@@ -86,31 +86,35 @@ const ScrollReveal = memo(function ScrollReveal({
         initial = { opacity: 0 };
         break;
     }
+
+    // Definir a transição com tipos corretos
+    const transition: Transition = {
+      duration,
+      delay,
+      ease: cubicBezier(0.25, 0.1, 0.25, 1)
+    };
     
     return {
       initial,
       animate: isVisible 
         ? { y: 0, x: 0, opacity: 1 } 
         : initial,
-      transition: {
-        duration,
-        delay,
-        ease: [0.25, 0.1, 0.25, 1], // Curva de easing suave
-      },
-      // Adicionar willChange para otimização de renderização
-      style: { 
-        willChange: isVisible ? 'opacity, transform' : 'auto',
-        // Usar hardware acceleration para animações mais suaves
-        backfaceVisibility: 'hidden',
-        WebkitBackfaceVisibility: 'hidden'
-      }
+      transition
     };
+  };
+
+  // Estilo separado para evitar problemas de tipagem
+  const customStyle: CSSProperties = {
+    willChange: isVisible ? 'opacity, transform' : 'auto',
+    backfaceVisibility: 'hidden',
+    WebkitBackfaceVisibility: 'hidden'
   };
 
   return (
     <motion.div
       ref={ref}
       className={className}
+      style={customStyle}
       {...getAnimationProps()}
     >
       {children}

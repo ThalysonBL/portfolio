@@ -27,7 +27,7 @@ export default function Home() {
   const contactRef = useRef(null);
 
   // Observadores de visibilidade para animações
-  const isProjectsInView = useInView(projectsRef, { once: true, margin: "-10% 0px" });
+  // Removendo a variável não utilizada e mantendo apenas o que é necessário
   const isContactInView = useInView(contactRef, { once: true, margin: "-10% 0px" });
 
   // Valores de movimento para o efeito Tilt Card
