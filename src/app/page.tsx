@@ -191,7 +191,7 @@ export default function Home() {
               <div className="bg-neutral-800/50 p-6 rounded-lg border border-neutral-700/50 h-full">
                 <h3 className="text-xl font-bold text-primary mb-4">Minha Jornada</h3>
                 <p className="text-neutral-200 leading-relaxed">
-                  Minha jornada na tecnologia começou aos 20 anos, quando tive meu primeiro contato com programação. 
+                  Minha jornada na tecnologia começou aos 18 anos, quando tive meu primeiro contato com programação. 
                   Desde então, venho me especializando continuamente, buscando as melhores práticas, 
                   ferramentas e metodologias de desenvolvimento.
                   <br /><br />

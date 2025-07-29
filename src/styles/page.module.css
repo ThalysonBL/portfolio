@@ -189,12 +189,12 @@
 
 .imageProfile {
     border-radius: 50%;
-    width: 150px;
-    height: 150px;
+    width: 130px;
+    height: 130px;
     object-fit: cover;
     border: 3px solid var(--primary);
     padding: 0.25rem;
-    margin: 0 auto;
+    margin: 1rem auto 0 auto;
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
 }
 
@@ -211,7 +211,7 @@
     font-weight: 400;
     line-height: 1.7;
     width: 100%;
-    padding: 0 1rem;
+    padding: 1rem;
 }
 
 @media (max-width: 768px) {
