@@ -5,7 +5,7 @@
     justify-content: center;
     background: linear-gradient(135deg, var(--neutral-950) 0%, var(--neutral-900) 100%);
     padding: 0 2rem;
-    min-height: 100vh;
+    min-height: 90vh;
     width: 100%;
     position: relative;
     overflow: hidden;
@@ -228,11 +228,11 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 5rem 2rem;
+    padding: 4rem 2rem;
     background: linear-gradient(180deg, var(--neutral-900) 0%, var(--neutral-950) 100%);
     position: relative;
     overflow: hidden;
-    min-height: 100vh;
+    min-height: 80vh;
 }
 
 .projectsSection::before {
@@ -248,7 +248,7 @@
 
 @media (max-width: 768px) {
     .projectsSection {
-        padding: 4rem 1rem;
+        padding: 3rem 1rem;
     }
 }
 
@@ -258,7 +258,7 @@
     font-family: var(--font-share-tech-mono);
     font-weight: 700;
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
     position: relative;
     display: inline-block;
 }
@@ -278,7 +278,7 @@
 @media (max-width: 768px) {
     .titleProjects {
         font-size: 2rem;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
     }
 }
 
@@ -294,15 +294,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 5rem 2rem;
+    padding: 4rem 2rem;
     background: linear-gradient(180deg, var(--neutral-900) 0%, var(--neutral-950) 100%);
     position: relative;
     overflow: hidden;
-    min-height: 100vh;
+    min-height: 70vh;
 }
 
 @media (max-width: 768px) {
     .contactSection {
-        padding: 4rem 1rem;
+        padding: 3rem 1rem;
     }
 }

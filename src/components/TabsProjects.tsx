@@ -104,24 +104,6 @@ export default function TabsProjects() {
                     )}
                 </motion.div>
             </AnimatePresence>
-            
-            {/* Botão para ver mais */}
-            <motion.div 
-                className="flex justify-center mt-8 sm:mt-12"
-                initial={{ opacity: 0 }}
-                animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
-                transition={{ delay: 0.6, duration: 0.5 }}
-            >
-                <a 
-                    href="#" 
-                    className="px-4 sm:px-6 py-2 sm:py-3 border border-primary/30 text-primary hover:bg-primary/10 rounded-lg transition-all duration-300 flex items-center gap-2 text-sm sm:text-base"
-                >
-                    Ver mais projetos
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
-                </a>
-            </motion.div>
         </div>
     )
 }

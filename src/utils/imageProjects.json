@@ -1,47 +1,56 @@
 [
     {
         "id": 1,
-        "type": "app",
-        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg",
-        "title": "App de Gestão Financeira",
-        "description": "Aplicativo mobile para controle financeiro pessoal com análise de gastos e planejamento orçamentário.",
-        "technologies": ["React Native", "TypeScript", "Firebase"],
+        "type": "outros",
+        "image": "/projects/ProjectApiTextApi.png",
+        "title": "API de extração de texto da imagem",
+        "description": "Ao enviar uma imagem, a API extrai o texto contido nela e retorna um JSON com o texto extraído.",
+        "technologies": ["Python", "FastAPI"],
         "link": "#projeto1"
     },
     {
         "id": 2,
-        "type": "sites",
-        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg",
-        "title": "E-commerce de Tecnologia",
-        "description": "Loja virtual completa com sistema de pagamentos integrado e painel administrativo.",
-        "technologies": ["Next.js", "Tailwind CSS", "Stripe"],
+        "type": "outros",
+        "image": "/projects/ProjectApiTreinoPro.jpg",
+        "title": "API de treino de modelo de IA",
+        "description": "Criação de fichas de treino personalizada por IA",
+        "technologies": ["Next.js", "Typescript"],
         "link": "#projeto2"
+    },
+    {
+        "id": 5,
+        "type": "app",
+        "image": "/projects/ProjectDocScan.jpg",
+        "title": "App de digitalização de documentos",
+        "description": "App de digitalização de documentos com OCR e IA",
+        "technologies": ["React Native", "Typescript", "Expo"],
+        "link": "#projeto5"
+    },
+    {
+        "id": 6,
+        "type": "app",
+        "image": "/projects/ProjectTreinoPro.jpg",
+        "title": "App de treino",
+        "description": "Criação de fichas de treino personalizada por IA",
+        "technologies": ["React Native", "Typescript", "Expo"],
+        "link": "#projeto6"
     },
     {
         "id": 3,
         "type": "sites",
-        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg",
-        "title": "Portal de Notícias",
-        "description": "Site de notícias com sistema de gerenciamento de conteúdo e painel administrativo.",
-        "technologies": ["React", "Node.js", "MongoDB"],
+        "image": "/projects/projectCortes.png",
+        "title": "Página de vendas para produtos.",
+        "description": "Página de vendas para produtos digitais.",
+        "technologies": ["Next.js", "Node.js"],
         "link": "#projeto3"
     },
     {
         "id": 4,
         "type": "sites",
-        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg",
-        "title": "Dashboard Analítico",
-        "description": "Interface de visualização de dados com gráficos interativos e relatórios personalizados.",
-        "technologies": ["React", "D3.js", "Material UI"],
+        "image": "/projects/ProjectIgnite.png",
+        "title": "Site Ignite",
+        "description": "Site referente a equipe Ignite do Counter Strike 2",
+        "technologies": ["Next.js", "Node.js", "Tailwind CSS"],
         "link": "#projeto4"
-    },
-    {
-        "id": 5,
-        "type": "outros",
-        "image": "https://www.cyberpunk.net/build/images/cyberpunk/keyart-booklet@1x-6fce3457.jpg",
-        "title": "Sistema de Automação",
-        "description": "Ferramenta de automação de processos para empresas com integração a múltiplos serviços.",
-        "technologies": ["Python", "Django", "Docker"],
-        "link": "#projeto5"
     }
 ]

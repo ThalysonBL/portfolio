@@ -1,11 +1,25 @@
 import { ImageProjectProps, ItemTabContainerProps } from "@/types/types";
 import Image from "next/image";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import ProjectModal from "./ProjectModal";
 
 export default function ItemTabContainer({ items, typeList }: ItemTabContainerProps) {
+    const [selectedProject, setSelectedProject] = useState<ImageProjectProps | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = (project: ImageProjectProps) => {
+        setSelectedProject(project);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     function TiltCard({ item }: { item: ImageProjectProps }) {
         const cardRef = useRef<HTMLDivElement>(null);
+        const [imgError, setImgError] = useState(false);
         
         // Valores de movimento para rastrear a posição do mouse
         const x = useMotionValue(0);
@@ -68,6 +82,7 @@ export default function ItemTabContainer({ items, typeList }: ItemTabContainerPr
                 }}
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
+                onClick={() => openModal(item)}
             >
                 <motion.div
                     className="w-full h-full relative preserve-3d rounded-xl overflow-hidden"
@@ -78,14 +93,23 @@ export default function ItemTabContainer({ items, typeList }: ItemTabContainerPr
                     }}
                 >
                     {/* Imagem principal */}
-                    <div className="w-full aspect-[4/3] relative">
-                        <Image
-                            src={item.image}
-                            alt={item.title || "Projeto"}
-                            fill
-                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-                            className="object-cover transition-transform duration-700 group-hover:scale-110"
-                        />
+                    <div className="w-full aspect-[16/12] relative bg-neutral-800">
+                        {!imgError ? (
+                            <Image
+                                src={item.image}
+                                alt={item.title || "Projeto"}
+                                fill
+                                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                onError={() => setImgError(true)}
+                            />
+                        ) : (
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-neutral-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                        )}
                         
                         {/* Overlay gradiente */}
                         <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-900/60 to-transparent opacity-70 group-hover:opacity-80 transition-opacity duration-300" />
@@ -98,15 +122,12 @@ export default function ItemTabContainer({ items, typeList }: ItemTabContainerPr
                     
                     {/* Conteúdo do card */}
                     <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 transform translate-z-10" style={{ transform: "translateZ(10px)" }}>
-                        <h3 className="text-base sm:text-lg font-bold text-white mb-0.5 sm:mb-1 group-hover:text-primary transition-colors line-clamp-1">
+                        <h3 className="text-base sm:text-lg font-bold text-white mb-2 sm:mb-3 group-hover:text-primary transition-colors line-clamp-1">
                             {item.title || "Projeto " + item.id}
                         </h3>
-                        <p className="text-neutral-300 text-xs sm:text-sm mb-2 sm:mb-3 line-clamp-2">
-                            {item.description || "Um projeto desenvolvido com tecnologias modernas para oferecer a melhor experiência ao usuário."}
-                        </p>
                         
                         {/* Tecnologias usadas */}
-                        <div className="flex flex-wrap gap-1 mb-2 sm:mb-3">
+                        <div className="flex flex-wrap gap-1">
                             {item.technologies?.map((tech, index) => (
                                 <span 
                                     key={index} 
@@ -122,17 +143,13 @@ export default function ItemTabContainer({ items, typeList }: ItemTabContainerPr
                             )}
                         </div>
                         
-                        {/* Botão de visualizar */}
-                        <motion.a
-                            href={item.link || "#"}
-                            className="inline-flex items-center text-xs sm:text-sm font-medium text-primary hover:text-primary-light transition-colors"
-                            whileHover={{ x: 3 }}
-                        >
-                            Ver projeto
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                        {/* Indicador de clique */}
+                        <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 bg-primary/20 text-primary text-xs font-medium px-1.5 py-0.5 rounded flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
                             </svg>
-                        </motion.a>
+                            <span>Detalhes</span>
+                        </div>
                     </div>
                     
                     {/* Efeito de brilho na borda */}
@@ -152,17 +169,20 @@ export default function ItemTabContainer({ items, typeList }: ItemTabContainerPr
     }
     
     function listItems(typeList: string) {
+        let filteredItems;
+        
         if (typeList === 'todos') {
-            return items.map((item: ImageProjectProps) => (
-                <TiltCard key={item.id} item={item} />
-            ));
+            filteredItems = [...items]; // Cria uma cópia para não modificar o array original
         } else {
-            return items
-                .filter((item: ImageProjectProps) => item.type === typeList)
-                .map((item: ImageProjectProps) => (
-                    <TiltCard key={item.id} item={item} />
-                ));
+            filteredItems = items.filter((item: ImageProjectProps) => item.type === typeList);
         }
+        
+        // Ordenar os itens pelo ID para garantir a ordem correta
+        filteredItems.sort((a, b) => a.id - b.id);
+        
+        return filteredItems.map((item: ImageProjectProps) => (
+            <TiltCard key={item.id} item={item} />
+        ));
     }
     
     // Verificar se há itens para exibir
@@ -173,7 +193,7 @@ export default function ItemTabContainer({ items, typeList }: ItemTabContainerPr
     return (
         <>
             {filteredItems.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 grid-flow-row-dense">
                     {listItems(typeList)}
                 </div>
             ) : (
@@ -193,6 +213,13 @@ export default function ItemTabContainer({ items, typeList }: ItemTabContainerPr
                     </p>
                 </motion.div>
             )}
+            
+            {/* Modal de projeto */}
+            <ProjectModal 
+                project={selectedProject} 
+                isOpen={isModalOpen} 
+                onClose={closeModal} 
+            />
         </>
     );
 }
